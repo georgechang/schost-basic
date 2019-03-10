@@ -15,7 +15,6 @@ Task("DockerBuild")
 	});
 
 Task("DockerRun")
-	.IsDependentOn("DockerBuild")
 	.Does(() => {
 		DockerRun(
 			new DockerContainerRunSettings {
@@ -31,6 +30,8 @@ Task("DockerRm")
 
 	});
 
-Task("Default");
+Task("Default")
+	.IsDependentOn("DockerBuild")
+	.IsDependentOn("DockerRun");
 
 RunTarget(target);
