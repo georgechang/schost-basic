@@ -23,8 +23,8 @@ Task("DockerBuild")
 		DockerBuild(
 			new DockerImageBuildSettings {
 				Rm = true,
-				Isolation = "process",
-				Tag = new string[] { "schost:latest" }
+				//Isolation = "process",
+				Tag = new string[] { "schost:messaging" }
 			},
 			"."
 		);
@@ -34,9 +34,9 @@ Task("DockerRun")
 	.Does(() => {
 		DockerRun(
 			new DockerContainerRunSettings {
-				Isolation = "process"
+				//Isolation = "process"
 			},
-			"schost",
+			"schost:messaging",
 			""
 		);
 	});
