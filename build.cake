@@ -2,6 +2,22 @@
 
 var target = Argument("target", "Default");
 
+Task("Clean")
+	.Does(() =>
+	{
+		DotNetCoreClean("./src/ScHost");
+	}
+);
+
+Task("Publish")
+	.IsDependentOn("Clean")
+	.Does(() =>
+	{
+		DotNetCorePublish("./src/ScHost/ScHost.csproj", new DotNetCorePublishSettings {
+			OutputDirectory = "C:\\sugcon\\host"
+		});
+	});
+
 Task("DockerBuild")
 	.Does(() => {
 		DockerBuild(

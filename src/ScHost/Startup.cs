@@ -8,5 +8,9 @@ namespace ScHost
         {
 
         }
+
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+        }
     }
 }

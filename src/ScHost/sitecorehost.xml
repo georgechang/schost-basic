@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+
+<Sitecore>
+  <Host>
+    <Services>
+      <Add>
+        <RabbitMQReceiverService>
+          <Type>GC.Plugin.Messaging.RabbitMQ.Services.RabbitMQReceiverService, GC.Plugin.Messaging.RabbitMQ</Type>
+          <As>GC.Plugin.Messaging.RabbitMQ.Services.IRabbitMQReceiverService, GC.Plugin.Messaging.RabbitMQ</As>
+          <Lifetime>Transient</Lifetime>
+        </RabbitMQReceiverService>
+      </Add>
+    </Services>
+  </Host>
+</Sitecore>
