@@ -1,0 +1,13 @@
+.header-alert {
+	position: absolute;
+	width: 100%;
+	opacity: 0.9;
+	background: gray;
+
+	padding: 20px 0;
+
+	color: black;
+	text-align: center;
+	font-size: 20px;
+	font-weight: bold;
+}
