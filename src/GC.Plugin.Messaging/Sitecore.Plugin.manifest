@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SitecorePlugin PluginName="GC.Plugin.Messaging" AssemblyName="GC.Plugin.Messaging" Version="1.0.0">
+  <Dependencies>
+    <Dependency name="Sitecore.Framework.Plugin.Web">4.0.0</Dependency>
+  </Dependencies>
+  <Tags />
+</SitecorePlugin>

@@ -9,6 +9,14 @@ Task("Clean")
 	}
 );
 
+Task("Pack")
+	.DoesForEach(GetFiles("./src/**/GC.Plugin.*.csproj"), project =>
+	{
+		DotNetCorePack(project.GetDirectory().FullPath, new DotNetCorePackSettings {
+			IncludeSymbols = true
+		});
+	});
+
 Task("Publish")
 	.IsDependentOn("Clean")
 	.Does(() =>
@@ -23,7 +31,7 @@ Task("DockerBuild")
 		DockerBuild(
 			new DockerImageBuildSettings {
 				Rm = true,
-				//Isolation = "process",
+				Isolation = "process",
 				Tag = new string[] { "schost:messaging" }
 			},
 			"."
@@ -34,7 +42,7 @@ Task("DockerRun")
 	.Does(() => {
 		DockerRun(
 			new DockerContainerRunSettings {
-				//Isolation = "process"
+				Isolation = "process"
 			},
 			"schost:messaging",
 			""
@@ -47,7 +55,6 @@ Task("DockerRm")
 	});
 
 Task("Default")
-	.IsDependentOn("DockerBuild")
-	.IsDependentOn("DockerRun");
+	.IsDependentOn("Publish");
 
 RunTarget(target);

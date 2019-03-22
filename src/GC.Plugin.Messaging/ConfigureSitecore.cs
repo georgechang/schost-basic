@@ -28,14 +28,6 @@ namespace GC.Plugin.Messaging
 
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
-			if (env.IsDevelopment())
-				app.UseDeveloperExceptionPage();
-			app.UseCors((Action<CorsPolicyBuilder>)(policy =>
-		   {
-			   policy.AllowAnyOrigin();
-			   policy.AllowAnyHeader();
-			   policy.AllowAnyMethod();
-		   }));
 			app.UseMvc((Action<IRouteBuilder>)(routes => routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}")));
 		}
 	}
