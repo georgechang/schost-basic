@@ -2,11 +2,10 @@
 <Settings>
   <Sitecore>
     <MessageQueueProviders>
-        <RabbitMQ type="GC.Plugin.Services.Configuration.RabbitMQConfiguration, GC.Plugin.Services">
+        <RabbitMQ type="GC.Plugin.Messaging.Services.Configuration.RabbitMQConfiguration, GC.Plugin.Messaging.Services">
             <ConnectionString>amqp://docker:docker@host.docker.internal:5672</ConnectionString>
             <ExchangeName>sugcon-exchange</ExchangeName>
-            <QueueName>publishQueue</QueueName>
-            <Delay>10</Delay>
+            <Delay>5</Delay>
         </RabbitMQ>
     </MessageQueueProviders>
   </Sitecore>

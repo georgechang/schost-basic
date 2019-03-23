@@ -13,6 +13,6 @@
     <PackageReference Include="Sitecore.Framework.Runtime.Build" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="../GC.Plugin.Services/GC.Plugin.Services.csproj" />
+    <ProjectReference Include="../GC.Plugin.Messaging.Services/GC.Plugin.Messaging.Services.csproj" />
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using GC.Plugin.Services.Alerts;
+using GC.Plugin.Messaging.Services.Alerts;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Sitecore.Framework.Runtime.FileProvider;

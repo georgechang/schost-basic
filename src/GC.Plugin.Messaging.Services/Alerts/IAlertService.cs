@@ -1,4 +1,4 @@
-namespace GC.Plugin.Services.Alerts
+namespace GC.Plugin.Messaging.Services.Alerts
 {
 	public interface IAlertService
 	{
