@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GC.Plugin.Messaging\GC.Plugin.Messaging.csproj" />
+    <ProjectReference Include="..\GC.Plugin.Messaging.Web\GC.Plugin.Messaging.Web.csproj" />
   </ItemGroup>
 
 </Project>
