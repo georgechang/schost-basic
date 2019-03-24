@@ -9,13 +9,6 @@
 
   <ItemGroup>
     <None Remove="sitecorehost.xml" />
-    <None Remove="sitecoreruntime\license.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="sitecoreruntime\license.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
