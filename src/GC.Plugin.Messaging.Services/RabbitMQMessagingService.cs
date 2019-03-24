@@ -42,8 +42,6 @@ namespace GC.Plugin.Messaging.Services
 
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
-			
-
 			var queueName = _channel.QueueDeclare().QueueName;
 
             _channel.QueueBind(queue: queueName,
