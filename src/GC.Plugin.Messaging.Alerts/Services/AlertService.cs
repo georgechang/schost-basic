@@ -1,4 +1,4 @@
-namespace GC.Plugin.Messaging.Services.Alerts
+namespace GC.Plugin.Messaging.Alerts.Services
 {
 	public class AlertService : IAlertService
 	{

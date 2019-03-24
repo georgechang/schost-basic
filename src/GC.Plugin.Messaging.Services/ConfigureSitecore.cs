@@ -1,5 +1,4 @@
 using System;
-using GC.Plugin.Messaging.Services.Alerts;
 using GC.Plugin.Messaging.Services.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,7 +32,6 @@ namespace GC.Plugin.Messaging.Services
 				return connection.CreateModel();
 			});
 			
-			services.AddSingleton<IAlertService, AlertService>();
 			services.AddHostedService<RabbitMQMessagingService>();
 		}
 	}

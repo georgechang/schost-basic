@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+  identity:
+    build:
+      context: .
+      dockerfile: Dockerfile.identity
+    image: identity:sugcon
+    isolation: process
+networks:
+  default:
+    external:
+      name: nat

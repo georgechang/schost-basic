@@ -1,13 +1,13 @@
 using System;
 using System.Threading.Tasks;
-using GC.Plugin.Messaging.Services.Alerts;
+using GC.Plugin.Messaging.Alerts.Services;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Sitecore.Framework.Runtime.FileProvider;
 using Sitecore.Framework.Runtime.Hosting;
 using Sitecore.Framework.Runtime.Plugins;
 
-namespace GC.Plugin.Messaging.Web.TagHelpers
+namespace GC.Plugin.Messaging.Alerts.TagHelpers
 {
 	public class AlertTagHelper : TagHelperComponent
 	{

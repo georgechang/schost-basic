@@ -1,6 +1,16 @@
+#addin "nuget:?package=Cake.PowerShell&version=0.4.7"
+#addin "nuget:?package=Cake.Figlet&version=1.2.0"
 #addin "nuget:?package=Cake.Docker&version=0.9.9"
 
+var hostPath = @"C:\inetpub\wwwroot\sc910.identityserver";
+
 var target = Argument("target", "Default");
+
+Setup(ctx => {
+    Information("");
+    Information(Figlet("sugcon.eu"));
+	Information("Sitecore Host Messaging");
+});
 
 Task("Clean")
 	.Does(() =>
@@ -23,6 +33,18 @@ Task("Publish")
 	{
 		DotNetCorePublish("./src/ScHost/ScHost.csproj", new DotNetCorePublishSettings {
 			OutputDirectory = "C:\\sugcon\\host"
+		});
+	});
+
+Task("Deploy Plugins")
+	.IsDependentOn("Pack")
+	.DoesForEach(GetFiles("./src/GC.Plugin.*/**/*.nupkg"), package => 
+	{
+		StartPowershellScript("Install-ScHostPackage", args => 
+		{
+			args.Append("Path", package.FullPath)
+				.Append("HostPath", hostPath)
+				.Append("Runtime", "");
 		});
 	});
 

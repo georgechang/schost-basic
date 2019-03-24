@@ -1,12 +1,14 @@
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using GC.Plugin.Messaging.Services.Alerts;
 using GC.Plugin.Messaging.Services.Configuration;
+using GC.Plugin.Messaging.Services.Processors;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -21,35 +23,38 @@ namespace GC.Plugin.Messaging.Services
 		private readonly ISitecoreConfiguration _configuration;
 		private readonly ILogger<RabbitMQMessagingService> _logger;
 		private readonly IModel _channel;
-		private readonly IAlertService _alertService;
+		private readonly IMessageProcessor _messageProcessor;
+		private readonly RabbitMQConfiguration _rabbitMqConfiguration;
 		private ISubscription _subscription;
 		private Timer _timer;
 		private bool _running;
 
-		public RabbitMQMessagingService(ISitecoreConfiguration configuration, ILogger<RabbitMQMessagingService> logger, IModel channel, IAlertService alertService)
+		public RabbitMQMessagingService(ISitecoreConfiguration configuration, ILogger<RabbitMQMessagingService> logger, IModel channel, IMessageProcessor messageProcessor)
 		{
 			_logger = logger;
 			_channel = channel;
 			_configuration = configuration;
-			_alertService = alertService;
+			_messageProcessor = messageProcessor;
+
+			_rabbitMqConfiguration = new RabbitMQConfiguration();
+			_configuration.GetSection(_sectionName).Bind(_rabbitMqConfiguration);
 		}
 
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
-			var rabbitMqConfiguration = new RabbitMQConfiguration();
-			_configuration.GetSection(_sectionName).Bind(rabbitMqConfiguration);
+			
 
 			var queueName = _channel.QueueDeclare().QueueName;
 
             _channel.QueueBind(queue: queueName,
-                              exchange: rabbitMqConfiguration.ExchangeName,
+                              exchange: _rabbitMqConfiguration.ExchangeName,
                               routingKey: "");
 
 			_subscription = new Subscription(_channel, queueName, false);
 
 			_logger.LogInformation($"Initializing RabbitMQ receiver - Queue: { queueName }");
 
-			_timer = new Timer(GetMessages, null, TimeSpan.Zero, TimeSpan.FromSeconds(rabbitMqConfiguration.Delay));
+			_timer = new Timer(GetMessages, null, TimeSpan.Zero, TimeSpan.FromSeconds(_rabbitMqConfiguration.Delay));
 
 			return Task.CompletedTask;
 		}
@@ -69,10 +74,11 @@ namespace GC.Plugin.Messaging.Services
 			{
 				string message = Encoding.UTF8.GetString(args.Body);
 				_logger.LogInformation($"Message received: { message }");
-				var jsonObject = JObject.Parse(message);
 
-				_alertService.IsEnabled = jsonObject.GetValue("enabled").Value<bool>();
-				_alertService.Message = jsonObject.GetValue("message").Value<string>();
+				var method = typeof(JsonConvert).GetMethods().Single(x => x.Name == "DeserializeObject" && x.GetGenericArguments().Length == 1 && x.GetParameters().Length == 1 && x.GetParameters()[0].ParameterType == typeof(string));
+				var deserializedObject = method.MakeGenericMethod(_rabbitMqConfiguration.MessageType).Invoke(null, new [] { message });
+
+				_messageProcessor.Process(deserializedObject);
 
 				_channel.BasicAck(args.DeliveryTag, false);
 			}

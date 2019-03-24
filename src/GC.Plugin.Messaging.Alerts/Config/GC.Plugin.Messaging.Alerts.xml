@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+  <Sitecore>
+      <MessageQueueProviders>
+        <RabbitMQ>
+            <MessageType>GC.Plugin.Messaging.Alerts.MessageTypes.AlertMessage, GC.Plugin.Messaging.Alerts</MessageType>
+        </RabbitMQ>
+    </MessageQueueProviders>
+  </Sitecore>
+</Settings>
