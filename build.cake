@@ -24,7 +24,8 @@ Task("Publish")
 	.Does(() =>
 	{
 		DotNetCorePublish("./src/ScHost/ScHost.csproj", new DotNetCorePublishSettings {
-			OutputDirectory = hostPath
+			OutputDirectory = hostPath,
+			Configuration = "Debug"
 		});
 	});
 
