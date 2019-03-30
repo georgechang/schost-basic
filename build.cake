@@ -9,6 +9,7 @@ var output = Argument("output", "");
 Setup(ctx => {
     Information("");
     Information(Figlet("Sitecore Host"));
+	Information("Basic Sitecore Host Application");
 });
 
 Task("Clean")
