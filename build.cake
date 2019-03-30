@@ -1,15 +1,14 @@
-#addin "nuget:?package=Cake.PowerShell&version=0.4.7"
 #addin "nuget:?package=Cake.Figlet&version=1.2.0"
 #addin "nuget:?package=Cake.Docker&version=0.9.9"
 
-var hostPath = @"C:\sugcon\host";
-
 var target = Argument("target", "Default");
+var configuration = Argument("configuration", "Release");
+var tag = Argument("tag", "schost:latest");
+var output = Argument("output", "");
 
 Setup(ctx => {
     Information("");
-    Information(Figlet("sugcon.eu"));
-	Information("Sitecore Host");
+    Information(Figlet("Sitecore Host"));
 });
 
 Task("Clean")
@@ -23,10 +22,16 @@ Task("Publish")
 	.IsDependentOn("Clean")
 	.Does(() =>
 	{
-		DotNetCorePublish("./src/ScHost/ScHost.csproj", new DotNetCorePublishSettings {
-			OutputDirectory = hostPath,
-			Configuration = "Debug"
-		});
+		var settings = new DotNetCorePublishSettings {
+			Configuration = configuration
+		};
+
+		if (!string.IsNullOrEmpty(output))
+		{
+			settings.OutputDirectory = output;
+		}
+
+		DotNetCorePublish("./src/ScHost/ScHost.csproj", settings);
 	});
 
 Task("Docker Build")
@@ -35,19 +40,20 @@ Task("Docker Build")
 			new DockerImageBuildSettings {
 				Rm = true,
 				Isolation = "process",
-				Tag = new string[] { "schost:latest" }
+				Tag = new string[] { tag }
 			},
 			"."
 		);
 	});
 
 Task("Docker Run")
+	.IsDependentOn("Docker Build")
 	.Does(() => {
 		DockerRun(
 			new DockerContainerRunSettings {
 				Isolation = "process"
 			},
-			"schost:latest",
+			tag,
 			""
 		);
 	});
